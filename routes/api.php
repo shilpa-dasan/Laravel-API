@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\UserAuthController;
+use App\Http\Controllers\Api\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +31,11 @@ Route::post('login', [UserAuthController::class, 'login']);
 
 Route::middleware('auth:api')->group( function () {
     Route::get('/user', [UserAuthController::class, 'userInfo']);
+
+    //CRUD
+    Route::resource('/articles', ArticleController::class);
 });
+
+
+
 

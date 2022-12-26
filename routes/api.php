@@ -23,4 +23,12 @@ use App\Http\Controllers\Api\UserAuthController;
 
 
 Route::post('register', [UserAuthController::class, 'register']);
+Route::post('login', [UserAuthController::class, 'login']);
+
+
+
+
+Route::middleware('auth:api')->group( function () {
+    Route::get('/user', [UserAuthController::class, 'userInfo']);
+});
 

@@ -123,8 +123,14 @@ class ArticleController extends ResponseController
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+        if(is_null($article)){
+            return $this->sendError('This article does not exist!!');
+        }
+
+        $article->delete();
+        return $this->sendResponse([],'Article Deleted Successfully');
     }
 }

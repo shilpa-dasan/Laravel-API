@@ -28,6 +28,10 @@ class UserAuthController extends ResponseController
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
+        if(User::where('email', $request->email)->exists()){
+            return $this->sendError('This Email already exist!!.', $validator->errors());  
+        }
+
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);

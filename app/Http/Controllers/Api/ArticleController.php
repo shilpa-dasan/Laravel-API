@@ -63,9 +63,15 @@ class ArticleController extends ResponseController
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show($id)
     {
-        //
+        $article = Article::find($id);
+  
+        if (is_null($article)) {
+            return $this->sendError('Article not found.');
+        }
+   
+        return $this->sendResponse(new ArticleResource($article), 'Article Retrieved Successfully.');
     }
 
     /**
@@ -86,9 +92,29 @@ class ArticleController extends ResponseController
      * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request, $id)
     {
-        //
+        $input =  $request->all();
+
+        $validator = Validator::make($input,[
+            'name' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error',$validator->errors());
+        }
+
+        $article = Article::find($id);
+
+        if (is_null($article)) {
+            return $this->sendError('Record does not exist!!.Not updated');
+        }
+
+        $article->name = $input['name'];
+        $article->description = $input['description'];
+        $article->save();
+
+        return $this->sendResponse(new ArticleResource($article),'Article Updated Successfully');
     }
 
     /**
